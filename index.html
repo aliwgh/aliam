@@ -1,0 +1,109 @@
+from pathlib import Path
+
+# بارگذاری قالب اصلی با افکت‌های نئون و انیمیشن اسکرول
+base_path = Path("/mnt/data")
+output_path = base_path / "index_neon_scroll.html"
+
+html_code = """
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TeleProxy - نسخه نئونی</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --neon-color: #00f0ff;
+        }
+
+        * {
+            font-family: 'Vazirmatn', sans-serif;
+        }
+
+        body {
+            background-color: #010409;
+            color: #e6edf3;
+            overflow-x: hidden;
+        }
+
+        /* افکت نئون برای تیتر */
+        .neon-text {
+            color: var(--neon-color);
+            text-shadow:
+                0 0 5px var(--neon-color),
+                0 0 10px var(--neon-color),
+                0 0 20px var(--neon-color),
+                0 0 40px var(--neon-color),
+                0 0 80px var(--neon-color);
+            animation: flicker 1.5s infinite alternate;
+        }
+
+        @keyframes flicker {
+            0% { opacity: 1; }
+            50% { opacity: 0.8; text-shadow: 0 0 30px var(--neon-color); }
+            100% { opacity: 1; }
+        }
+
+        /* انیمیشن اسکرول */
+        .fade-in-scroll {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 1s ease-out, transform 1s ease-out;
+        }
+
+        .fade-in-scroll.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body class="bg-black text-white">
+
+    <!-- تایتل با افکت نئون -->
+    <header class="text-center py-10 fade-in-scroll">
+        <h1 class="text-4xl md:text-5xl font-extrabold neon-text">پروکسی یاب تلگرام</h1>
+        <p class="text-lg text-slate-400 mt-4">نسل جدید پروکسی‌های امن و پرسرعت</p>
+    </header>
+
+    <!-- محتوای نمایشی -->
+    <main class="max-w-4xl mx-auto space-y-10 px-4 pb-20">
+        <section class="fade-in-scroll bg-gray-900/60 border border-gray-700 rounded-xl p-6">
+            <h2 class="text-2xl font-bold mb-2 text-cyan-400">پروکسی‌های برتر</h2>
+            <p>در این بخش بهترین پروکسی‌ها نمایش داده می‌شوند.</p>
+        </section>
+
+        <section class="fade-in-scroll bg-gray-900/60 border border-gray-700 rounded-xl p-6">
+            <h2 class="text-2xl font-bold mb-2 text-green-400">وضعیت سرورها</h2>
+            <p>وضعیت اتصال و سرعت سرورها در اینجا مشخص می‌شود.</p>
+        </section>
+
+        <section class="fade-in-scroll bg-gray-900/60 border border-gray-700 rounded-xl p-6">
+            <h2 class="text-2xl font-bold mb-2 text-pink-400">ارتباط با ما</h2>
+            <p>برای پشتیبانی یا دریافت اطلاعات بیشتر، با ما در تماس باشید.</p>
+        </section>
+    </main>
+
+    <!-- اسکریپت انیمیشن اسکرول -->
+    <script>
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.fade-in-scroll').forEach(el => observer.observe(el));
+    </script>
+</body>
+</html>
+"""
+
+# ذخیره فایل خروجی
+output_path.write_text(html_code, encoding="utf-8")
+output_path.name
