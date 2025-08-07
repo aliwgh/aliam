@@ -1,0 +1,733 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Temp Mail Pro | نسخه نهایی</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <!-- Tailwind CSS for utility classes -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <style>
+        /* ============================================
+        Neumorphic Pro - v21 - Welcome Modal
+        ============================================ */
+        :root {
+            --ease-out: cubic-bezier(0.2, 0.8, 0.2, 1);
+            --font-family: 'Vazirmatn', sans-serif;
+        }
+
+        /* --- Dark Theme (Default) --- */
+        body {
+            --color-primary: #38bdf8; /* Sky 400 */
+            --color-danger: #f43f5e; /* Rose 500 */
+            --bg-color: #1e293b; /* Slate 800 */
+            --surface-color: #1e293b; /* Slate 800 */
+            --text-light: #e2e8f0; /* Slate 200 */
+            --text-dark: #94a3b8; /* Slate 400 */
+            --shadow-light: rgba(55, 65, 81, 0.7); /* Gray 700 */
+            --shadow-dark: rgba(0, 0, 0, 0.4);
+            --border-color: #334155; /* Slate 700 */
+        }
+
+        /* --- Light Theme --- */
+        body.light-theme {
+            --color-primary: #0284c7; /* Sky 600 */
+            --color-danger: #be123c; /* Rose 700 */
+            --bg-color: #f1f5f9; /* Slate 100 */
+            --surface-color: #f1f5f9; /* Slate 100 */
+            --text-light: #1e293b; /* Slate 800 */
+            --text-dark: #64748b; /* Slate 500 */
+            --shadow-light: #ffffff;
+            --shadow-dark: rgba(148, 163, 184, 0.6); /* Slate 400 */
+            --border-color: #cbd5e1; /* Slate 300 */
+        }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: var(--font-family);
+            color: var(--text-light);
+            background-color: var(--bg-color);
+            min-height: 100vh;
+            transition: background-color 0.4s var(--ease-out), color 0.4s var(--ease-out);
+        }
+
+        .neumorphic-card {
+            border-radius: 1.5rem;
+            background: var(--surface-color);
+            box-shadow: 8px 8px 16px var(--shadow-dark), -8px -8px 16px var(--shadow-light);
+            transition: all 0.4s var(--ease-out);
+        }
+        .neumorphic-card:hover { transform: translateY(-4px); }
+        
+        .neumorphic-inset {
+             border-radius: 0.75rem;
+             background: var(--bg-color);
+             box-shadow: inset 5px 5px 10px var(--shadow-dark), inset -5px -5px 10px var(--shadow-light);
+        }
+
+        .neumorphic-button {
+            border-radius: 0.75rem;
+            background: var(--surface-color);
+            box-shadow: 6px 6px 12px var(--shadow-dark), -6px -6px 12px var(--shadow-light);
+            transition: all 0.2s var(--ease-out);
+            font-weight: 600;
+            color: var(--text-light);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 44px;
+        }
+        .neumorphic-button:hover:not(:disabled) { color: var(--color-primary); transform: translateY(-2px); }
+        .neumorphic-button:active:not(:disabled) {
+            box-shadow: inset 4px 4px 8px var(--shadow-dark), inset -4px -4px 8px var(--shadow-light);
+            transform: translateY(1px); color: var(--text-dark);
+        }
+        .neumorphic-button:disabled { opacity: 0.6; cursor: not-allowed; }
+        .neumorphic-button.primary { color: var(--color-primary); font-weight: 700; }
+
+        .neumorphic-button-footer {
+            display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.75rem 1.5rem;
+            border-radius: 50px; background: var(--surface-color);
+            box-shadow: 5px 5px 10px var(--shadow-dark), -5px -5px 10px var(--shadow-light);
+            transition: all 0.3s var(--ease-out); font-weight: 500; color: var(--text-dark);
+        }
+        .neumorphic-button-footer:hover { color: var(--color-primary); transform: translateY(-3px); }
+
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        .spinner { animation: spin 1s linear infinite; }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: .5; } }
+        .notification-dot {
+            width: 10px; height: 10px; background-color: var(--color-primary);
+            border-radius: 50%; animation: pulse 2s infinite;
+        }
+
+        .message-item {
+            animation: fadeIn 0.5s var(--ease-out); border-radius: 1rem; background: var(--surface-color);
+            box-shadow: 6px 6px 12px var(--shadow-dark), -6px -6px 12px var(--shadow-light);
+            transition: all 0.3s var(--ease-out);
+        }
+        .message-item.read { opacity: 0.7; }
+        .message-item:hover { transform: scale(1.02); border-left: 4px solid var(--color-primary); }
+        
+        .custom-scrollbar::-webkit-scrollbar { width: 8px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: var(--bg-color); }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: var(--shadow-light); border-radius: 10px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: var(--color-primary); }
+
+        .form-input {
+            width: 100%; padding: 0.75rem 1rem; border-radius: 0.75rem;
+            background: var(--bg-color);
+            box-shadow: inset 4px 4px 8px var(--shadow-dark), inset -4px -4px 8px var(--shadow-light);
+            border: 1px solid transparent; outline: none; color: var(--text-light);
+            transition: border-color 0.3s var(--ease-out);
+        }
+        .form-input:focus { border-color: var(--color-primary); }
+        
+        .modal-overlay { z-index: 50; transition: opacity 0.3s var(--ease-out); }
+        .modal-content { transition: transform 0.3s var(--ease-out), opacity 0.3s var(--ease-out); }
+        .modal-overlay.hidden .modal-content { transform: scale(0.95); opacity: 0; }
+
+        /* Notification styles */
+        #notification-container { z-index: 100; }
+        .notification-item {
+            animation: slideInRight 0.5s var(--ease-out) forwards;
+            max-width: 350px;
+            width: 100%;
+        }
+        @keyframes slideInRight {
+            from { opacity: 0; transform: translateX(100%); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        .notification-item.closing { animation: slideOutRight 0.5s var(--ease-out) forwards; }
+        @keyframes slideOutRight {
+            from { opacity: 1; transform: translateX(0); }
+            to { opacity: 0; transform: translateX(100%); }
+        }
+    </style>
+</head>
+<body>
+    <div id="notification-container" class="fixed top-4 right-4 space-y-3"></div>
+
+    <div id="app-container" class="custom-scrollbar p-4 md:p-8">
+        <div class="container mx-auto">
+            <header class="flex justify-between items-center mb-12">
+                <div class="text-right">
+                    <h1 class="text-4xl md:text-5xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-slate-200 to-slate-400 mb-2">
+                        Temp Mail <span class="text-sky-400">Pro</span>
+                    </h1>
+                    <p class="text-lg text-dark max-w-2xl">سرویس ایمیل یکبار مصرف با اطلاع‌رسانی</p>
+                </div>
+                <button id="theme-toggle" class="neumorphic-button p-3 rounded-full text-lg">
+                    <i class="fas fa-sun"></i>
+                </button>
+            </header>
+
+            <main class="grid grid-cols-1 lg:grid-cols-3 gap-6 md:gap-8">
+                <div class="lg:col-span-1 flex flex-col gap-6 md:gap-8">
+                    <div class="neumorphic-card p-6">
+                        <h2 class="text-xl font-bold mb-4">ایجاد ایمیل جدید</h2>
+                        <div class="flex items-center gap-2 mb-4">
+                            <input type="text" id="custom-username" placeholder="نام کاربری دلخواه" class="form-input text-left" style="direction: ltr;">
+                            <span id="email-domain" class="text-dark">@...</span>
+                        </div>
+                        <button id="btn-new-email" class="neumorphic-button primary w-full py-3">
+                            <span class="btn-text">ایجاد کن</span>
+                            <i class="fas fa-spinner fa-spin spinner hidden"></i>
+                        </button>
+                    </div>
+
+                    <div class="neumorphic-card p-6">
+                        <h2 class="text-xl font-bold mb-4">مدیریت</h2>
+                        <div id="current-email-display" class="neumorphic-inset p-3 mb-4 text-center truncate">
+                            <span class="font-mono text-sm" id="active-email-text">ایمیلی انتخاب نشده</span>
+                        </div>
+                        <div class="grid grid-cols-2 gap-4">
+                            <button id="btn-copy-email" class="neumorphic-button py-2"><i class="fas fa-copy mr-2"></i><span class="btn-text">کپی</span></button>
+                            <button id="btn-delete-email" class="neumorphic-button py-2 text-danger hover:text-danger"><i class="fas fa-trash mr-2"></i>حذف</button>
+                        </div>
+                    </div>
+                    
+                    <div class="neumorphic-card p-6 flex flex-col">
+                        <h2 class="text-xl font-bold mb-4">لیست ایمیل‌ها</h2>
+                        <div id="email-list" class="flex-grow space-y-3 overflow-y-auto max-h-60 custom-scrollbar pr-2"></div>
+                    </div>
+                </div>
+                <div class="lg:col-span-2 neumorphic-card p-6 flex flex-col h-[85vh] min-h-[700px]">
+                    <div class="flex justify-between items-center mb-4 flex-shrink-0">
+                        <div class="flex items-center gap-3">
+                            <h2 class="text-xl font-bold">صندوق ورودی</h2>
+                            <div id="notification-indicator" class="hidden notification-dot"></div>
+                        </div>
+                        <button id="btn-refresh-inbox" class="neumorphic-button px-4 py-2 text-sm">
+                            <span class="btn-text"><i class="fas fa-sync-alt mr-2"></i>به‌روزرسانی</span>
+                            <i class="fas fa-spinner fa-spin spinner hidden"></i>
+                        </button>
+                    </div>
+                    <div class="mb-4 relative">
+                        <input type="text" id="inbox-search" placeholder="جستجو در ایمیل‌ها..." class="form-input w-full !pr-10">
+                        <i class="fas fa-search absolute top-1/2 right-3 -translate-y-1/2 text-dark"></i>
+                    </div>
+                    <div id="inbox-view" class="flex-grow overflow-y-auto custom-scrollbar pr-2">
+                        <div id="inbox-placeholder" class="flex flex-col items-center justify-center h-full text-slate-500"><i class="fas fa-folder-open fa-4x mb-4"></i><p class="font-bold">صندوق ورودی خالی است</p></div>
+                        <div id="inbox-messages" class="space-y-4"></div>
+                    </div>
+                </div>
+            </main>
+            
+            <footer class="text-center mt-16 mb-8 pt-8 border-t" style="border-color: var(--border-color);">
+                <div class="flex justify-center items-center gap-4 md:gap-6">
+                    <a href="https://t.me/sourrce_kade" target="_blank" rel="noopener noreferrer" class="neumorphic-button-footer"><i class="fab fa-telegram-plane"></i><span>کانال تلگرام</span></a>
+                    <a href="https://t.me/itsthemoein" target="_blank" rel="noopener noreferrer" class="neumorphic-button-footer"><i class="fas fa-user-circle"></i><span>تماس با توسعه دهنده</span></a>
+                </div>
+                <p class="mt-8 text-xs text-dark">طراحی و توسعه با ❤️ برای سورس‌کده</p>
+            </footer>
+        </div>
+    </div>
+
+    <!-- Modals -->
+    <div id="welcome-modal" class="modal-overlay hidden fixed inset-0 bg-slate-900/70 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="modal-content neumorphic-card p-6 w-full max-w-lg text-center">
+            <h3 class="text-2xl font-bold mb-4 text-primary">🎉 به Temp Mail Pro خوش آمدید!</h3>
+            <p class="text-md text-dark mb-6">
+                این یک سرویس ایمیل موقت قدرتمند است. به راحتی ایمیل بسازید، فایل‌های پیوست را دانلود کنید و از اعلان‌های آنی برای پیام‌های جدید لذت ببرید.
+            </p>
+            <p class="text-sm text-dark mb-8">تمام اطلاعات شما به صورت امن در مرورگر خودتان ذخیره می‌شود.</p>
+            <button id="welcome-modal-close" class="neumorphic-button primary px-10 py-2">شروع کنید</button>
+        </div>
+    </div>
+
+    <div id="delete-modal" class="modal-overlay hidden fixed inset-0 bg-slate-900/70 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="modal-content neumorphic-card p-6 w-full max-w-md text-center">
+            <h3 class="text-lg font-bold mb-2">حذف ایمیل</h3>
+            <p class="text-sm text-dark mb-6">آیا از حذف این ایمیل مطمئن هستید؟ این عمل غیرقابل بازگشت است.</p>
+            <div class="flex justify-center gap-4">
+                <button id="modal-confirm-delete" class="neumorphic-button text-danger px-8 py-2">حذف کن</button>
+                <button id="modal-cancel-delete" class="neumorphic-button px-8 py-2">انصراف</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="message-modal" class="modal-overlay hidden fixed inset-0 bg-slate-900/70 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="modal-content neumorphic-card p-0 w-full max-w-4xl h-[90vh] flex flex-col">
+            <div class="flex justify-between items-center p-4 border-b flex-shrink-0" style="border-color: var(--border-color);">
+                <h3 id="message-modal-subject" class="text-lg font-bold truncate"></h3>
+                <div class="flex items-center gap-2">
+                    <div class="relative">
+                        <button id="message-modal-more-btn" class="neumorphic-button !rounded-full !p-0 w-8 h-8 text-lg"><i class="fas fa-ellipsis-v"></i></button>
+                        <div id="message-modal-dropdown" class="hidden absolute left-0 mt-2 w-48 neumorphic-card p-2 text-sm">
+                            <button id="message-modal-unread-btn" class="w-full text-right p-2 rounded-lg hover:bg-slate-700/50 dark:hover:bg-slate-200/50">علامت‌گذاری به عنوان خوانده‌نشده</button>
+                            <button id="message-modal-source-btn" class="w-full text-right p-2 rounded-lg hover:bg-slate-700/50 dark:hover:bg-slate-200/50">مشاهده سورس</button>
+                        </div>
+                    </div>
+                    <button id="message-modal-close" class="neumorphic-button !rounded-full !p-0 w-8 h-8 text-lg">&times;</button>
+                </div>
+            </div>
+            <div id="message-modal-body" class="p-4 flex-grow overflow-y-auto custom-scrollbar">
+                <div class="flex items-center justify-center h-full"><i class="fas fa-spinner fa-spin fa-3x"></i></div>
+            </div>
+            <div id="message-modal-attachments-container" class="hidden p-4 border-t flex-shrink-0" style="border-color: var(--border-color);">
+                <h4 class="font-bold mb-3"><i class="fas fa-paperclip mr-2"></i>پیوست‌ها</h4>
+                <div id="attachments-list" class="space-y-2 max-h-24 overflow-y-auto custom-scrollbar"></div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        let state = {
+            emails: [],
+            activeEmail: null,
+            apiBaseUrl: 'https://api.mail.tm',
+            availableDomain: '',
+            inboxCheckInterval: null,
+            allMessages: [],
+            currentMessageInModal: null,
+        };
+
+        const elements = {
+            activeEmailText: document.getElementById('active-email-text'),
+            btnNewEmail: document.getElementById('btn-new-email'),
+            btnCopyEmail: document.getElementById('btn-copy-email'),
+            btnDeleteEmail: document.getElementById('btn-delete-email'),
+            emailList: document.getElementById('email-list'),
+            inboxPlaceholder: document.getElementById('inbox-placeholder'),
+            inboxMessages: document.getElementById('inbox-messages'),
+            btnRefreshInbox: document.getElementById('btn-refresh-inbox'),
+            customUsername: document.getElementById('custom-username'),
+            emailDomain: document.getElementById('email-domain'),
+            themeToggle: document.getElementById('theme-toggle'),
+            notificationIndicator: document.getElementById('notification-indicator'),
+            inboxSearch: document.getElementById('inbox-search'),
+            welcomeModal: {
+                overlay: document.getElementById('welcome-modal'),
+                closeBtn: document.getElementById('welcome-modal-close'),
+            },
+            deleteModal: {
+                overlay: document.getElementById('delete-modal'),
+                confirmBtn: document.getElementById('modal-confirm-delete'),
+                cancelBtn: document.getElementById('modal-cancel-delete'),
+            },
+            messageModal: {
+                overlay: document.getElementById('message-modal'),
+                subject: document.getElementById('message-modal-subject'),
+                body: document.getElementById('message-modal-body'),
+                closeBtn: document.getElementById('message-modal-close'),
+                attachmentsContainer: document.getElementById('message-modal-attachments-container'),
+                attachmentsList: document.getElementById('attachments-list'),
+                moreBtn: document.getElementById('message-modal-more-btn'),
+                dropdown: document.getElementById('message-modal-dropdown'),
+                unreadBtn: document.getElementById('message-modal-unread-btn'),
+                sourceBtn: document.getElementById('message-modal-source-btn'),
+            }
+        };
+
+        const toggleButtonLoading = (button, isLoading) => {
+            const textEl = button.querySelector('.btn-text');
+            const spinnerEl = button.querySelector('.spinner');
+            button.disabled = isLoading;
+            if (isLoading) {
+                if (textEl) textEl.classList.add('hidden');
+                if (spinnerEl) spinnerEl.classList.remove('hidden');
+            } else {
+                if (textEl) textEl.classList.remove('hidden');
+                if (spinnerEl) spinnerEl.classList.add('hidden');
+            }
+        };
+
+        const showNotification = (title, message, type = 'success') => {
+            const container = document.getElementById('notification-container');
+            const notif = document.createElement('div');
+            notif.className = 'notification-item neumorphic-card p-4 flex items-start';
+
+            const iconMap = {
+                success: 'fa-check-circle text-green-400',
+                error: 'fa-times-circle text-red-500',
+                info: 'fa-info-circle text-sky-400'
+            };
+
+            notif.innerHTML = `
+                <i class="fas ${iconMap[type] || iconMap.info} text-2xl ml-3 mt-1"></i>
+                <div>
+                    <h4 class="font-bold">${title}</h4>
+                    <p class="text-sm text-dark">${message}</p>
+                </div>
+            `;
+
+            container.appendChild(notif);
+
+            setTimeout(() => {
+                notif.classList.add('closing');
+                notif.addEventListener('animationend', () => notif.remove());
+            }, 4000);
+        };
+
+        const apiFetch = async (url, options = {}) => {
+            try {
+                const response = await fetch(url, options);
+                if (!response.ok) {
+                    const errorData = await response.json().catch(() => ({ message: `HTTP error! status: ${response.status}` }));
+                    throw new Error(errorData.detail || errorData.message || `HTTP error! status: ${response.status}`);
+                }
+                return options.isText ? await response.text() : await response.json();
+            } catch (error) { 
+                console.error('External API Error:', error);
+                showNotification('خطای شبکه', 'ارتباط با سرور ایمیل برقرار نشد.', 'error');
+                return null; 
+            }
+        };
+
+        const getReadMessages = (emailAddress) => new Set(JSON.parse(localStorage.getItem(`read_messages_${emailAddress}`) || '[]'));
+        
+        const markMessageAsRead = (emailAddress, messageId) => {
+            const readMessages = getReadMessages(emailAddress);
+            readMessages.add(messageId);
+            localStorage.setItem(`read_messages_${emailAddress}`, JSON.stringify([...readMessages]));
+        };
+
+        const markMessageAsUnread = (emailAddress, messageId) => {
+            const readMessages = getReadMessages(emailAddress);
+            readMessages.delete(messageId);
+            localStorage.setItem(`read_messages_${emailAddress}`, JSON.stringify([...readMessages]));
+        };
+
+        const saveEmailsToLocal = () => localStorage.setItem('emailkade_emails', JSON.stringify(state.emails));
+        const loadEmailsFromLocal = () => {
+            const storedEmails = localStorage.getItem('emailkade_emails');
+            if (storedEmails) state.emails = JSON.parse(storedEmails);
+        };
+
+        const renderEmailList = () => {
+            elements.emailList.innerHTML = '';
+            if (state.emails.length === 0) {
+                elements.emailList.innerHTML = '<p class="text-center text-dark py-8">هنوز ایمیلی نساخته‌اید.</p>';
+                return;
+            }
+            state.emails.forEach(email => {
+                const isActive = state.activeEmail && email.id === state.activeEmail.id;
+                const item = document.createElement('div');
+                item.className = `p-3 rounded-lg cursor-pointer transition-all duration-300 flex justify-between items-center ${isActive ? 'neumorphic-inset text-primary' : 'hover:text-primary'}`;
+                item.innerHTML = `<span class="font-mono text-sm truncate">${email.address}</span>`;
+                item.onclick = () => selectEmail(email);
+                elements.emailList.appendChild(item);
+            });
+        };
+
+        const renderActiveEmail = () => {
+            elements.activeEmailText.textContent = state.activeEmail ? state.activeEmail.address : 'ایمیلی انتخاب نشده';
+        };
+
+        const createNewEmail = async () => {
+            const btn = elements.btnNewEmail;
+            toggleButtonLoading(btn, true);
+            
+            let username = elements.customUsername.value.trim() || Math.random().toString(36).substring(2, 10);
+            const password = Math.random().toString(36).substring(2, 12);
+            if (!state.availableDomain) {
+                showNotification('خطا', 'دامنه ایمیل در دسترس نیست.', 'error');
+                toggleButtonLoading(btn, false);
+                return;
+            }
+            
+            const fullAddress = `${username}@${state.availableDomain}`;
+            const accountData = { address: fullAddress, password: password };
+            
+            try {
+                const createAccountResponse = await apiFetch(`${state.apiBaseUrl}/accounts`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(accountData) });
+                if (!createAccountResponse || !createAccountResponse.id) throw new Error('ساخت حساب در سرویس خارجی ناموفق بود.');
+
+                const tokenData = await apiFetch(`${state.apiBaseUrl}/token`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(accountData) });
+                if (!tokenData || !tokenData.token) throw new Error('دریافت توکن خارجی ناموفق بود.');
+                
+                const newEmail = {
+                    id: createAccountResponse.id,
+                    address: fullAddress,
+                    token: tokenData.token,
+                    createdAt: new Date().toISOString()
+                };
+
+                state.emails.unshift(newEmail);
+                saveEmailsToLocal();
+                elements.customUsername.value = '';
+                selectEmail(newEmail);
+                showNotification('موفقیت', `ایمیل ${fullAddress} با موفقیت ایجاد شد.`);
+            } catch (error) {
+                console.error('Error creating email:', error.message);
+                showNotification('خطا در ساخت ایمیل', error.message, 'error');
+            } finally {
+                toggleButtonLoading(btn, false);
+            }
+        };
+
+        const selectEmail = (email) => {
+            if (state.activeEmail && email && state.activeEmail.id === email.id) return;
+            state.activeEmail = email;
+            
+            if (state.inboxCheckInterval) clearInterval(state.inboxCheckInterval);
+            
+            renderEmailList();
+            renderActiveEmail();
+            loadInbox(true);
+            
+            if (email) {
+                state.inboxCheckInterval = setInterval(() => loadInbox(false), 30000);
+            }
+        };
+
+        const loadInbox = async (isInitialLoad = false) => {
+            if (!state.activeEmail) {
+                elements.inboxPlaceholder.style.display = 'flex';
+                elements.inboxMessages.innerHTML = '';
+                return;
+            }
+            
+            const btn = elements.btnRefreshInbox;
+            if (isInitialLoad) {
+                toggleButtonLoading(btn, true);
+                elements.inboxPlaceholder.style.display = 'none';
+                elements.inboxMessages.innerHTML = '<div class="flex items-center justify-center h-full text-dark"><i class="fas fa-spinner fa-spin fa-3x"></i></div>';
+            }
+
+            const messagesData = await apiFetch(`${state.apiBaseUrl}/messages`, { headers: { 'Authorization': `Bearer ${state.activeEmail.token}` } });
+            
+            if (isInitialLoad) {
+                toggleButtonLoading(btn, false);
+                showNotification('به‌روزرسانی', 'صندوق ورودی با موفقیت به‌روز شد.', 'info');
+            }
+            if (!messagesData) return;
+
+            state.allMessages = messagesData['hydra:member'] || [];
+            const readMessages = getReadMessages(state.activeEmail.address);
+            
+            const unreadCount = state.allMessages.filter(msg => !readMessages.has(msg.id)).length;
+            if (unreadCount > 0) {
+                elements.notificationIndicator.classList.remove('hidden');
+                if (!isInitialLoad) {
+                    showNotification('پیام جدید', `شما ${unreadCount} پیام خوانده نشده دارید.`, 'info');
+                }
+            } else {
+                elements.notificationIndicator.classList.add('hidden');
+            }
+
+            renderMessages(state.allMessages);
+        };
+
+        const renderMessages = (messages) => {
+            elements.inboxMessages.innerHTML = '';
+            if (messages.length === 0) {
+                elements.inboxPlaceholder.style.display = 'flex';
+                return;
+            }
+            
+            elements.inboxPlaceholder.style.display = 'none';
+            const readMessages = getReadMessages(state.activeEmail.address);
+
+            messages.forEach(msg => {
+                const isRead = readMessages.has(msg.id);
+                const messageEl = document.createElement('div');
+                messageEl.className = `message-item p-4 cursor-pointer ${isRead ? 'read' : ''}`;
+                messageEl.dataset.messageId = msg.id;
+                messageEl.innerHTML = `
+                    <div class="flex justify-between items-center text-sm text-dark mb-2">
+                        <span class="truncate font-bold">${msg.from.name || msg.from.address}</span>
+                        <span>${new Date(msg.createdAt).toLocaleString('fa-IR')}</span>
+                    </div>
+                    <h4 class="font-semibold mb-2">${msg.subject || 'بدون موضوع'}</h4>
+                    <p class="text-sm text-dark">${msg.intro || 'برای مشاهده متن کامل کلیک کنید.'}</p>`;
+                messageEl.addEventListener('click', () => showMessageInModal(msg));
+                elements.inboxMessages.appendChild(messageEl);
+            });
+        };
+
+        const showMessageInModal = async (msg) => {
+            state.currentMessageInModal = msg;
+            markMessageAsRead(state.activeEmail.address, msg.id);
+            document.querySelector(`.message-item[data-message-id='${msg.id}']`)?.classList.add('read');
+            loadInbox(false);
+
+            elements.messageModal.overlay.classList.remove('hidden');
+            elements.messageModal.subject.textContent = msg.subject || 'بدون موضوع';
+            elements.messageModal.body.innerHTML = '<div class="flex items-center justify-center h-full"><i class="fas fa-spinner fa-spin fa-3x"></i></div>';
+            elements.messageModal.attachmentsContainer.classList.add('hidden');
+            elements.messageModal.attachmentsList.innerHTML = '';
+            elements.messageModal.sourceBtn.textContent = 'مشاهده سورس';
+            
+            const msgData = await apiFetch(`${state.apiBaseUrl}/messages/${msg.id}`, { headers: { 'Authorization': `Bearer ${state.activeEmail.token}` } });
+            
+            if (msgData) {
+                const iframe = document.createElement('iframe');
+                iframe.style.cssText = 'width: 100%; height: 100%; border: none; background: #fff; border-radius: 0.5rem;';
+                elements.messageModal.body.innerHTML = '';
+                elements.messageModal.body.appendChild(iframe);
+                iframe.srcdoc = msgData.html && msgData.html.length > 0 ? msgData.html[0] : `<pre style="white-space: pre-wrap; word-wrap: break-word; color: #333;">${msgData.text || 'محتوایی برای نمایش یافت نشد.'}</pre>`;
+
+                if (msgData.attachments && msgData.attachments.length > 0) {
+                    elements.messageModal.attachmentsContainer.classList.remove('hidden');
+                    msgData.attachments.forEach(attachment => {
+                        const attachmentEl = document.createElement('a');
+                        attachmentEl.href = `${state.apiBaseUrl}${attachment.downloadUrl}`;
+                        attachmentEl.target = '_blank';
+                        attachmentEl.rel = 'noopener noreferrer';
+                        attachmentEl.className = 'flex items-center justify-between p-2 rounded-lg hover:bg-slate-700/50 dark:hover:bg-slate-200/50 transition-colors duration-200';
+                        
+                        const sizeInKB = attachment.size / 1024;
+                        const formattedSize = sizeInKB > 1024 
+                            ? `${(sizeInKB / 1024).toFixed(2)} MB` 
+                            : `${sizeInKB.toFixed(2)} KB`;
+
+                        attachmentEl.innerHTML = `
+                            <div class="flex items-center">
+                                <i class="fas fa-file-alt ml-3 text-lg"></i>
+                                <span>${attachment.filename}</span>
+                            </div>
+                            <div class="flex items-center">
+                                <span class="text-sm text-dark mr-4">${formattedSize}</span>
+                                <i class="fas fa-download text-primary"></i>
+                            </div>
+                        `;
+                        elements.messageModal.attachmentsList.appendChild(attachmentEl);
+                    });
+                }
+            } else {
+                elements.messageModal.body.innerHTML = '<p>خطا در بارگذاری محتوای ایمیل.</p>';
+            }
+        };
+
+        const handleDeleteClick = () => {
+            if (!state.activeEmail) {
+                showNotification('خطا', 'ابتدا یک ایمیل را برای حذف انتخاب کنید.', 'error');
+                return;
+            }
+            elements.deleteModal.overlay.classList.remove('hidden');
+        };
+
+        const confirmDelete = async () => {
+            localStorage.removeItem(`read_messages_${state.activeEmail.address}`);
+            state.emails = state.emails.filter(e => e.id !== state.activeEmail.id);
+            saveEmailsToLocal();
+            const deletedAddress = state.activeEmail.address;
+            selectEmail(state.emails.length > 0 ? state.emails[0] : null);
+            elements.deleteModal.overlay.classList.add('hidden');
+            showNotification('موفقیت', `ایمیل ${deletedAddress} حذف شد.`);
+        };
+        
+        const copyActiveEmail = () => {
+            if (!state.activeEmail) {
+                showNotification('خطا', 'ابتدا یک ایمیل را برای کپی انتخاب کنید.', 'error');
+                return;
+            }
+            navigator.clipboard.writeText(state.activeEmail.address).then(() => {
+                showNotification('موفقیت', 'آدرس ایمیل در کلیپ‌بورد کپی شد.');
+            }).catch(err => {
+                console.error('Copy failed', err);
+                showNotification('خطا', 'کپی کردن ناموفق بود.', 'error');
+            });
+        };
+
+        const fetchDomain = async () => {
+            const domainsData = await apiFetch(`${state.apiBaseUrl}/domains`);
+            if (domainsData && domainsData['hydra:member'] && domainsData['hydra:member'].length > 0) {
+                state.availableDomain = domainsData['hydra:member'][0].domain;
+                elements.emailDomain.textContent = `@${state.availableDomain}`;
+            }
+        };
+
+        const handleSearch = (e) => {
+            const searchTerm = e.target.value.toLowerCase();
+            const filteredMessages = state.allMessages.filter(msg => 
+                (msg.subject && msg.subject.toLowerCase().includes(searchTerm)) ||
+                (msg.from.address && msg.from.address.toLowerCase().includes(searchTerm))
+            );
+            renderMessages(filteredMessages);
+        };
+
+        const initApp = async () => {
+            loadEmailsFromLocal();
+            renderEmailList();
+            if (state.emails.length > 0) selectEmail(state.emails[0]);
+            await fetchDomain();
+            Notification.requestPermission();
+
+            const hasVisited = localStorage.getItem('hasVisited');
+            if (!hasVisited) {
+                elements.welcomeModal.overlay.classList.remove('hidden');
+                localStorage.setItem('hasVisited', 'true');
+            }
+        };
+
+        // Event Listeners
+        elements.btnNewEmail.addEventListener('click', createNewEmail);
+        elements.btnDeleteEmail.addEventListener('click', handleDeleteClick);
+        elements.btnCopyEmail.addEventListener('click', copyActiveEmail);
+        elements.btnRefreshInbox.addEventListener('click', () => loadInbox(true));
+        elements.inboxSearch.addEventListener('keyup', handleSearch);
+        
+        elements.deleteModal.confirmBtn.addEventListener('click', confirmDelete);
+        elements.deleteModal.cancelBtn.addEventListener('click', () => elements.deleteModal.overlay.classList.add('hidden'));
+        
+        elements.welcomeModal.closeBtn.addEventListener('click', () => elements.welcomeModal.overlay.classList.add('hidden'));
+        elements.welcomeModal.overlay.addEventListener('click', (e) => {
+            if (e.target === elements.welcomeModal.overlay) {
+                elements.welcomeModal.overlay.classList.add('hidden');
+            }
+        });
+
+        elements.messageModal.closeBtn.addEventListener('click', () => elements.messageModal.overlay.classList.add('hidden'));
+        elements.messageModal.moreBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            elements.messageModal.dropdown.classList.toggle('hidden');
+        });
+        document.addEventListener('click', () => elements.messageModal.dropdown.classList.add('hidden'));
+
+        elements.messageModal.unreadBtn.addEventListener('click', () => {
+            if (!state.currentMessageInModal) return;
+            markMessageAsUnread(state.activeEmail.address, state.currentMessageInModal.id);
+            elements.messageModal.overlay.classList.add('hidden');
+            showNotification('موفقیت', 'پیام به عنوان خوانده‌نشده علامت‌گذاری شد.');
+            loadInbox(false);
+        });
+
+        elements.messageModal.sourceBtn.addEventListener('click', async () => {
+            if (!state.currentMessageInModal) return;
+            const btn = elements.messageModal.sourceBtn;
+            const body = elements.messageModal.body;
+
+            if (btn.textContent === 'مشاهده سورس') {
+                body.innerHTML = '<div class="flex items-center justify-center h-full"><i class="fas fa-spinner fa-spin fa-3x"></i></div>';
+                const sourceData = await apiFetch(`${state.apiBaseUrl}${state.currentMessageInModal.downloadUrl}`, { isText: true });
+                body.innerHTML = `<pre class="text-xs whitespace-pre-wrap break-all custom-scrollbar p-2" style="direction: ltr; text-align: left;">${sourceData || 'سورس یافت نشد.'}</pre>`;
+                btn.textContent = 'مشاهده ایمیل';
+            } else {
+                showMessageInModal(state.currentMessageInModal); // Re-render the original view
+            }
+            elements.messageModal.dropdown.classList.add('hidden');
+        });
+
+        elements.themeToggle.addEventListener('click', () => {
+            document.body.classList.toggle('light-theme');
+            const isLight = document.body.classList.contains('light-theme');
+            localStorage.setItem('theme', isLight ? 'light' : 'dark');
+            elements.themeToggle.innerHTML = isLight ? '<i class="fas fa-moon"></i>' : '<i class="fas fa-sun"></i>';
+        });
+        
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'light') {
+            document.body.classList.add('light-theme');
+            elements.themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
+        }
+
+        initApp();
+    });
+    </script>
+</body>
+</html>
